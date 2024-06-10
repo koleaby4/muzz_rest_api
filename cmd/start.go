@@ -8,5 +8,6 @@ import (
 func main() {
 
 	http.HandleFunc("/user/create", handlers.CreateUserHandler)
+	http.HandleFunc("/login", handlers.LoginPost)
 	http.ListenAndServe(":8080", nil)
 }
