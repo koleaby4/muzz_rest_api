@@ -6,6 +6,7 @@ import (
 	"os"
 )
 
+// GetConfig reads the .env file and returns the value of the key
 func GetConfig(key string) string {
 	err := godotenv.Load()
 	if err != nil {

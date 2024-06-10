@@ -7,6 +7,7 @@ import (
 	"log"
 )
 
+// GetQueries returns a new Queries struct
 func GetQueries() *Queries {
 	dsn := config.GetConfig("DSN")
 	conn, err := pgx.Connect(context.Background(), dsn)
