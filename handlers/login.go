@@ -25,6 +25,7 @@ func getToken(email string) string {
 	return tokenString
 }
 
+// LoginPost handles the POST /login route
 func LoginPost(w http.ResponseWriter, r *http.Request) {
 	email := r.FormValue("email")
 	password := []byte(r.FormValue("password"))
