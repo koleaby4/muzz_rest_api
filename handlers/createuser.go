@@ -4,31 +4,43 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/koleaby4/muzz_rest_api/db"
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 )
 
 func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
-	var req db.User
-	err := json.NewDecoder(r.Body).Decode(&req)
+	var inUser db.User
+	err := json.NewDecoder(r.Body).Decode(&inUser)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	q := db.GetQueries()
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(inUser.Password), 10)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-	user, err := q.CreateUser(context.Background(), db.User{
-		Email:    req.Email,
-		Password: req.Password,
-		Name:     req.Name,
-		Gender:   req.Gender,
-		Age:      req.Age,
-	})
+	inUser.Password = string(hashedPassword)
+
+	q := db.GetQueries()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	dbUser, err := q.CreateUser(context.Background(), inUser)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	json.NewEncoder(w).Encode(user)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	json.NewEncoder(w).Encode(dbUser)
 }
