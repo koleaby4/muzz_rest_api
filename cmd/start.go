@@ -1,18 +1,12 @@
 package main
 
 import (
-	"log"
-	"os"
-
-	"github.com/lpernett/godotenv"
+	"github.com/koleaby4/muzz_rest_api/handlers"
+	"net/http"
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
 
-	dsn := os.Getenv("DSN")
-	log.Println(dsn)
+	http.HandleFunc("/user/create", handlers.CreateUserHandler)
+	http.ListenAndServe(":8080", nil)
 }

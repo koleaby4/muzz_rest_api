@@ -6,9 +6,9 @@ package db
 
 type User struct {
 	ID       *int32
-	Email    string
-	Password string
-	Name     string
-	Gender   string
-	Age      int32
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Name     string `json:"name"`
+	Gender   string `json:"gender"`
+	Age      int32  `json:"age"`
 }
