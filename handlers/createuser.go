@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+// CreateUserHandler handles the POST /user/create route
 func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 	var inUser db.User
 	err := json.NewDecoder(r.Body).Decode(&inUser)
