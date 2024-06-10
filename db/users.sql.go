@@ -15,14 +15,6 @@ values ($1, $2, $3, $4, $5)
 returning id, email, password, name, gender, age
 `
 
-type CreateUserParams struct {
-	Email    string
-	Password string
-	Name     string
-	Gender   string
-	Age      int32
-}
-
 func (q *Queries) CreateUser(ctx context.Context, arg User) (User, error) {
 	row := q.db.QueryRow(ctx, createUser,
 		arg.Email,
