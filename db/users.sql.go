@@ -34,3 +34,24 @@ func (q *Queries) CreateUser(ctx context.Context, arg User) (User, error) {
 	)
 	return i, err
 }
+
+const getUser = `-- name: GetUser :one
+select id, email, password, name, gender, age
+from users
+where email = $1
+limit 1
+`
+
+func (q *Queries) GetUser(ctx context.Context, email string) (User, error) {
+	row := q.db.QueryRow(ctx, getUser, email)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Email,
+		&i.Password,
+		&i.Name,
+		&i.Gender,
+		&i.Age,
+	)
+	return i, err
+}
